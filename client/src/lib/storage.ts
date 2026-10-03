@@ -9,10 +9,22 @@ export interface Session {
   userId: string
 }
 
+export interface BetsSummary {
+  won: number
+  lost: number
+}
+
+export interface RaceResult {
+  name: string
+  wins: number
+}
+
 const STORAGE_KEYS = {
   user: 'snailrace_user',
   session: 'snailrace_session',
   balance: 'snailrace_balance',
+  betsSummary: 'snailrace_bets_summary',
+  raceResults: 'snailrace_race_results',
 } as const
 
 export function getStoredUser(): StoredUser | null {
@@ -44,4 +56,22 @@ export function getBalance(): number {
 
 export function setBalance(amount: number): void {
   localStorage.setItem(STORAGE_KEYS.balance, String(amount))
+}
+
+export function getBetsSummary(): BetsSummary | null {
+  const raw = localStorage.getItem(STORAGE_KEYS.betsSummary)
+  return raw ? (JSON.parse(raw) as BetsSummary) : null
+}
+
+export function setBetsSummary(summary: BetsSummary): void {
+  localStorage.setItem(STORAGE_KEYS.betsSummary, JSON.stringify(summary))
+}
+
+export function getRaceResults(): RaceResult[] | null {
+  const raw = localStorage.getItem(STORAGE_KEYS.raceResults)
+  return raw ? (JSON.parse(raw) as RaceResult[]) : null
+}
+
+export function setRaceResults(results: RaceResult[]): void {
+  localStorage.setItem(STORAGE_KEYS.raceResults, JSON.stringify(results))
 }

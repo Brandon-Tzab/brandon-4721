@@ -1,11 +1,29 @@
-import { Button } from '@/components/ui/button'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from '@/context/AuthContext'
+import { ProtectedRoute } from '@/components/ProtectedRoute'
+import { RegisterPage } from '@/routes/RegisterPage'
+import { LoginPage } from '@/routes/LoginPage'
+import { DashboardPage } from '@/routes/DashboardPage'
 
 function App() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center gap-4">
-      <h1 className="text-2xl font-semibold">Sistema de caracoles</h1>
-      <Button>Scaffold listo</Button>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 

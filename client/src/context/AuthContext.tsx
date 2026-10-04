@@ -6,16 +6,19 @@ import {
   getSession,
   setSession,
   clearSession,
-  setBalance,
+  getBalance,
+  setBalance as setStoredBalance,
   type StoredUser,
 } from '@/lib/storage'
 
 interface AuthContextValue {
   user: StoredUser | null
   isAuthenticated: boolean
+  balance: number
   register: (name: string, email: string, password: string) => Promise<void>
   login: (email: string, password: string) => Promise<void>
   logout: () => void
+  addToBalance: (amount: number) => void
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -25,6 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     () => getSession() !== null
   )
+  const [balance, setBalance] = useState<number>(() => getBalance())
 
   async function register(name: string, email: string, password: string) {
     if (getStoredUser()) {
@@ -43,11 +47,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     setStoredUser(newUser)
-    setBalance(0)
+    setStoredBalance(0)
     setSession({ userId: newUser.id })
 
     setUser(newUser)
     setIsAuthenticated(true)
+    setBalance(0)
   }
 
   async function login(email: string, password: string) {
@@ -74,8 +79,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAuthenticated(false)
   }
 
+  function addToBalance(amount: number) {
+    const newBalance = balance + amount
+    setStoredBalance(newBalance)
+    setBalance(newBalance)
+  }
+
   return (
-    <AuthContext value={{ user, isAuthenticated, register, login, logout }}>
+    <AuthContext
+      value={{
+        user,
+        isAuthenticated,
+        balance,
+        register,
+        login,
+        logout,
+        addToBalance,
+      }}
+    >
       {children}
     </AuthContext>
   )

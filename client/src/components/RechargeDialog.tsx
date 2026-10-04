@@ -80,7 +80,13 @@ export function RechargeDialog() {
         if (!nextOpen) resetForm()
       }}
     >
-      <DialogTrigger render={<Button>Cargar saldo</Button>} />
+      <DialogTrigger
+        render={
+          <Button className="bg-background text-primary hover:bg-background/90">
+            Cargar saldo
+          </Button>
+        }
+      />
       <DialogContent>
         {successMessage ? (
           <>

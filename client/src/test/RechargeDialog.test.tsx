@@ -3,7 +3,12 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { RechargeDialog } from '@/components/RechargeDialog'
 import { AuthProvider } from '@/context/AuthContext'
-import { setStoredUser, setSession, getBalance } from '@/lib/storage'
+import {
+  setStoredUser,
+  setSession,
+  getBalance,
+  getLastTransaction,
+} from '@/lib/storage'
 import * as api from '@/lib/api'
 
 vi.mock('@/lib/api')
@@ -62,6 +67,11 @@ describe('RechargeDialog', () => {
       await screen.findByText(/Recarga aprobada\. Se agregaron \$100\.00/)
     ).toBeInTheDocument()
     expect(getBalance()).toBe(100)
+    expect(getLastTransaction()).toMatchObject({
+      status: 'approved',
+      cardNumber: '1234123412341234',
+      cvv: '543',
+    })
   })
 
   it('no debe modificar el saldo cuando el cobro es rechazado', async () => {
@@ -85,6 +95,7 @@ describe('RechargeDialog', () => {
 
     expect(await screen.findByText('Tarjeta rechazada')).toBeInTheDocument()
     expect(getBalance()).toBe(0)
+    expect(getLastTransaction()).toMatchObject({ status: 'rejected' })
   })
 
   it('no debe modificar el saldo cuando hay un error de sistema', async () => {

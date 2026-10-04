@@ -86,6 +86,6 @@ Nota: `rejected` y `approved` responden `200` porque la operación sí se proces
 
 ## Estado del proyecto
 
-**Terminado:** registro/login/logout, persistencia de sesión y saldo, dashboard con ambas gráficas, recarga de saldo con los 4 escenarios de SnailPay descritos arriba, pruebas automatizadas en backend (Vitest + Supertest) y frontend (Vitest + React Testing Library).
+**Terminado:** registro/login/logout, persistencia de sesión y saldo, dashboard con ambas gráficas, recarga de saldo con los 4 escenarios de SnailPay descritos arriba (incluyendo la persistencia en `localStorage` de la última transacción, con tarjeta/CVV ficticios), identidad visual/branding consistente, pruebas automatizadas en backend (Vitest + Supertest) y frontend (Vitest + React Testing Library).
 
-**Pendiente:** pulido final de presentación/identidad visual. Las tareas opcionales (aplicación desplegada, propuesta de base de datos) se evaluarán al final según el tiempo disponible.
+**Pendiente:** las tareas opcionales (aplicación desplegada, propuesta de base de datos) se evaluarán al final según el tiempo disponible.

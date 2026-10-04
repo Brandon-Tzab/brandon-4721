@@ -1,6 +1,8 @@
 import { useState, type SubmitEvent } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
+import { AppBrand } from '@/components/AppBrand'
+import { PasswordInput } from '@/components/PasswordInput'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -55,15 +57,16 @@ export function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Card className="w-full max-w-sm">
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6">
+      <AppBrand size="lg" />
+      <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Crear cuenta</CardTitle>
           <CardDescription>
             Regístrate para empezar a apostar en Sistema de caracoles
           </CardDescription>
         </CardHeader>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <CardContent className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <Label htmlFor="name">Nombre completo</Label>
@@ -84,9 +87,8 @@ export function RegisterPage() {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="password">Contraseña</Label>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 maxLength={72}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -94,9 +96,8 @@ export function RegisterPage() {
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="confirmPassword">Confirmar contraseña</Label>
-              <Input
+              <PasswordInput
                 id="confirmPassword"
-                type="password"
                 maxLength={72}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}

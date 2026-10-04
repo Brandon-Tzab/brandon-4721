@@ -1,18 +1,17 @@
 import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
-import { getBalance } from '@/lib/storage'
 import {
   getOrCreateBetsSummary,
   getOrCreateRaceResults,
 } from '@/lib/simulatedData'
 import { BetsDonutChart } from '@/components/BetsDonutChart'
 import { RacesBarChart } from '@/components/RacesBarChart'
+import { RechargeDialog } from '@/components/RechargeDialog'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
 export function DashboardPage() {
-  const { user, logout } = useAuth()
-  const [balance] = useState(() => getBalance())
+  const { user, balance, logout } = useAuth()
   const [betsSummary] = useState(() => getOrCreateBetsSummary())
   const [raceResults] = useState(() => getOrCreateRaceResults())
 
@@ -27,7 +26,7 @@ export function DashboardPage() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button disabled>Cargar saldo</Button>
+            <RechargeDialog />
             <Button variant="outline" onClick={logout}>
               Cerrar sesión
             </Button>

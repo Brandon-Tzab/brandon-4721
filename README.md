@@ -53,7 +53,7 @@ cd client && npm test
 - Registro, inicio de sesión y cierre de sesión (simulados localmente, con hash de contraseña vía bcrypt en el backend).
 - Sesión y saldo persistentes tras recargar la página.
 - Dashboard con nombre de usuario, saldo actual, gráfica de apuestas ganadas/perdidas (donut) y gráfica de victorias por caracol (barras), con datos simulados.
-- Recarga de saldo mediante SnailPay (pasarela de pagos simulada, ver más abajo).
+- Recarga de saldo mediante SnailPay (pasarela de pagos simulada, ver más abajo), con la última transacción (incluyendo tarjeta/CVV ficticios) persistida en `localStorage`.
 
 ## SnailPay: cómo reproducir cada respuesta simulada
 
@@ -83,9 +83,3 @@ Todas las respuestas (sin importar el resultado) incluyen: `id`, `status`, `stat
 | Datos con formato inválido (ej. tarjeta con menos de 16 dígitos, campos faltantes) | — | — | 400 |
 
 Nota: `rejected` y `approved` responden `200` porque la operación sí se procesó correctamente, solo que el resultado del negocio varía — `400` es exclusivo para cuando los datos ni siquiera tienen el formato correcto, y `503` simula que SnailPay (no el comercio) tiene un problema interno.
-
-## Estado del proyecto
-
-**Terminado:** registro/login/logout, persistencia de sesión y saldo, dashboard con ambas gráficas, recarga de saldo con los 4 escenarios de SnailPay descritos arriba (incluyendo la persistencia en `localStorage` de la última transacción, con tarjeta/CVV ficticios), identidad visual/branding consistente, pruebas automatizadas en backend (Vitest + Supertest) y frontend (Vitest + React Testing Library).
-
-**Pendiente:** las tareas opcionales (aplicación desplegada, propuesta de base de datos) se evaluarán al final según el tiempo disponible.

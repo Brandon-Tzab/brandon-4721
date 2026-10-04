@@ -19,12 +19,27 @@ export interface RaceResult {
   wins: number
 }
 
+export interface SnailPayTransaction {
+  id: string
+  status: 'approved' | 'rejected' | 'system_error'
+  status_detail: string
+  transaction_amount: number
+  date_created: string
+  authorization_code: string | null
+  reference: string
+  payer_id: string
+  payer_email: string
+  cardNumber: string
+  cvv: string
+}
+
 const STORAGE_KEYS = {
   user: 'snailrace_user',
   session: 'snailrace_session',
   balance: 'snailrace_balance',
   betsSummary: 'snailrace_bets_summary',
   raceResults: 'snailrace_race_results',
+  lastTransaction: 'snailrace_last_transaction',
 } as const
 
 export function getStoredUser(): StoredUser | null {
@@ -74,4 +89,16 @@ export function getRaceResults(): RaceResult[] | null {
 
 export function setRaceResults(results: RaceResult[]): void {
   localStorage.setItem(STORAGE_KEYS.raceResults, JSON.stringify(results))
+}
+
+export function setLastTransaction(transaction: SnailPayTransaction): void {
+  localStorage.setItem(
+    STORAGE_KEYS.lastTransaction,
+    JSON.stringify(transaction)
+  )
+}
+
+export function getLastTransaction(): SnailPayTransaction | null {
+  const raw = localStorage.getItem(STORAGE_KEYS.lastTransaction)
+  return raw ? (JSON.parse(raw) as SnailPayTransaction) : null
 }

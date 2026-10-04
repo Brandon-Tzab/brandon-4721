@@ -1,6 +1,7 @@
 import { useState, type SubmitEvent } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { chargeSnailPay } from '@/lib/api'
+import { setLastTransaction } from '@/lib/storage'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -54,6 +55,8 @@ export function RechargeDialog() {
         fullName,
         amount: Number(amount),
       })
+
+      setLastTransaction(result)
 
       if (result.status === 'approved') {
         addToBalance(result.transaction_amount)

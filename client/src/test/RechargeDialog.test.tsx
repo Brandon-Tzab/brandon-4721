@@ -86,4 +86,48 @@ describe('RechargeDialog', () => {
     expect(await screen.findByText('Tarjeta rechazada')).toBeInTheDocument()
     expect(getBalance()).toBe(0)
   })
+
+  it('no debe modificar el saldo cuando hay un error de sistema', async () => {
+    vi.mocked(api.chargeSnailPay).mockResolvedValue({
+      id: '1',
+      status: 'system_error',
+      status_detail: 'Error interno del sistema, intenta de nuevo más tarde',
+      transaction_amount: 100,
+      date_created: new Date().toISOString(),
+      authorization_code: null,
+      reference: 'ref-1',
+      payer_id: '1',
+      payer_email: 'usuario@test.com',
+      cardNumber: '0000000000000000',
+      cvv: '543',
+    })
+
+    const user = userEvent.setup()
+    renderDialog()
+    await fillAndSubmit(user)
+
+    expect(
+      await screen.findByText(
+        'Error interno del sistema, intenta de nuevo más tarde'
+      )
+    ).toBeInTheDocument()
+    expect(getBalance()).toBe(0)
+  })
+
+  it('no debe modificar el saldo cuando la conexión se agota (timeout)', async () => {
+    vi.mocked(api.chargeSnailPay).mockRejectedValue(
+      new Error('No se pudo conectar con SnailPay, intenta de nuevo')
+    )
+
+    const user = userEvent.setup()
+    renderDialog()
+    await fillAndSubmit(user)
+
+    expect(
+      await screen.findByText(
+        'No se pudo conectar con SnailPay, intenta de nuevo'
+      )
+    ).toBeInTheDocument()
+    expect(getBalance()).toBe(0)
+  })
 })

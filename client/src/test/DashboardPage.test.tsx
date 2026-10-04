@@ -32,6 +32,7 @@ describe('DashboardPage', () => {
 
   it('debe mostrar el saldo guardado en localStorage', () => {
     renderDashboard()
-    expect(screen.getByText('Saldo actual: $150.00')).toBeInTheDocument()
+    expect(screen.getByText('Saldo actual')).toBeInTheDocument()
+    expect(screen.getByText('$150.00')).toBeInTheDocument()
   })
 })

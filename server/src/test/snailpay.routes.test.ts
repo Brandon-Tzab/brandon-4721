@@ -91,4 +91,11 @@ describe("POST /api/snailpay/charge", () => {
         expect(response.status).toBe(400);
     });
 
+    it("debe responder 400 cuando el monto no es válido", async () => {
+        const response = await request(app)
+            .post("/api/snailpay/charge")
+            .send({ ...cardApproved, amount: 0 });
+        expect(response.status).toBe(400);
+    });
+
 });
